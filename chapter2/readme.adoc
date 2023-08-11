@@ -1,0 +1,50 @@
+= Questions
+// use `asciidoctor readme.adoc` to make an html file
+:stem:
+
+== Question 2.1
+
+look at _question-2.1.py_
+
+A cosine wave of frequency `f` is sampled at time stem:[t = n * 1 / fs], where n
+is the sample number (an integer) and `fs` is the sample rate. verify that
+
+[stem]
+++++
+cos 2\pi * f * t = cos 2\pi * (k * fs - f) * t = cos 2\pi * (k * fs + f) * t
+++++
+
+for all integers k, positive or negative.
+
+== Question 2.2
+
+verify that stem:[\pm(k * fs + f)] for all integers k, positive or negative, is
+precisely the same set of values as stem:[\pm(k * fs \pm f)] for all intergers
+k, positive or negative.
+
+stem:[\pm(k * fs \pm f)] would have the same values of the same range as
+stem:[\pm(k * fs + f)], BUT the range would have more values.
+
+
+== Question 2.3
+
+look at _question-2.3.ens_
+
+The sample is one bar long at 120 bpm so I set the bpm to 120 and make sure the
+ramp osc well oscillate at the lenght of a bar. stem:[TempoInfo / 4] is the
+frequency for one bar. This is because TempoInfo is just bps (beats per second).
+1 beat is equal to a fourth of a bar so dividing it by four would give you the
+length of a bar each second.
+
+I do stem:[index % 16] because I need to simulate reducing the sampling rate by
+2khz.
+
+The frequency of the first alias is 1600hz.This is because you are only allowing
+1 sample to pass out 
+
+
+== Links
+https://en.wikipedia.org/wiki/Mathematical_operators_and_symbols_in_Unicode[math symbols in unicode]
+https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject[latex math symbols]
+https://www.desmos.com/calculator/n7eobfzvbx[plus-minus sign in desmos graphing calculator]
+https://theasciicode.com.ar/extended-ascii-code/plus-minus-sign-ascii-code-241.html[ascii characters]
