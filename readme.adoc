@@ -1,0 +1,6 @@
+= Practical Signal Processing
+This is a collection of answers from the book _Practical Signal Processing_ by
+Mark Owen.
+
+I use python, c,  and the modular programming language of _Reactor 6_ by native
+instruments to answer these questions.
