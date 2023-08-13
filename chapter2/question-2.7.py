@@ -5,7 +5,9 @@ import os
 
 
 class Im():
+
     "Wraper for the Image class"
+
     def __init__(self, image_file:str):
         im = Image.open(image_file)
         im = im.convert("RGB")
