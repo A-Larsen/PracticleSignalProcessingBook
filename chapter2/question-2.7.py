@@ -54,16 +54,47 @@ class Im():
         while i < p:
             rx = math.floor(random.random() * self.size[0])
             ry = math.floor(random.random() * self.size[1])
-            left_pixel = rx - 1
-            if (left_pixel - 1 > 0):
-                self.pixels[left_pixel, ry] = self.pixels[rx, ry]
+            left_pixel = (rx - 1, ry)
+            if (left_pixel[0] - 1 > 0):
+                self.pixels[left_pixel] = self.pixels[rx, ry]
             else:
                 continue
             i += 1
 
+    def copyRandomNerestNeighbor(self, percentage:int) -> None:
+        """
+        selects a random pixel and copies it to the left, right, top and bottom
+        a percentage number of times. You can go over 100 percent
+        """
+        i = 0
+        p = math.floor(self.number_of_pixels * (percentage / 100))
+        while i < p:
+            x = math.floor(random.random() * self.size[0])
+            y = math.floor(random.random() * self.size[1])
+            pixel = self.pixels[x, y]
+            neighbors = {
+                    "left":  (x - 1, y),
+                    "top":  (x, y + 1),
+                    "right":  (x + 1, y),
+                    "bottom":  (x, y - 1)
+            }
+            for key in neighbors.keys():
+                n = neighbors[key]
+                x_in_bounds = (n[0] >= 0 and 
+                               n[0] < self.size[0])
+                y_in_bounds = (n[1] >= 0 and 
+                               n[1] < self.size[1])
+                if  x_in_bounds and y_in_bounds:
+                    self.pixels[n] = pixel
+                else:
+                    continue
+            i += 1
+
+
 im = Im("bike.jpg")
 # im.fillRandomPixels(300, (0, 0, 0, 255))
 # im.fillPercentage(20, (0, 0, 0, 255))
-im.copyRandomNeighborLeft(3000)
+# im.copyRandomNeighborLeft(3000)
+im.copyRandomNerestNeighbor(120)
 im.displayImage("out.png")
 
