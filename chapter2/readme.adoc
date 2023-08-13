@@ -48,3 +48,8 @@ https://en.wikipedia.org/wiki/Mathematical_operators_and_symbols_in_Unicode[math
 https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject[latex math symbols]
 https://www.desmos.com/calculator/n7eobfzvbx[plus-minus sign in desmos graphing calculator]
 https://theasciicode.com.ar/extended-ascii-code/plus-minus-sign-ascii-code-241.html[ascii characters]
+https://www.youtube.com/watch?v=rop0W4QDOUI[maze solving - Computerphile]
+https://github.com/mikepound/mazesolving/blob/master/solve.py[Dr Mike Pound using python PIL]
+https://pypi.org/project/Pillow/[Pillow (python image library fork)]
+https://pillow.readthedocs.io/en/stable/[Pillow Documentation]
+https://pil.readthedocs.io/en/latest/overview.html[Pil Documentation]
