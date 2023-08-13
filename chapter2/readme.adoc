@@ -6,24 +6,24 @@
 
 look at _question-2.1.py_
 
-A cosine wave of frequency `f` is sampled at time stem:[t = n * 1 / fs], where n
-is the sample number (an integer) and `fs` is the sample rate. verify that
+A cosine wave of frequency `f` is sampled at time stem:[t = n * 1 / s], where n
+is the sample number (an integer) and `s` is the sample rate. verify that
 
 [stem]
 ++++
-cos 2\pi * f * t = cos 2\pi * (k * fs - f) * t = cos 2\pi * (k * fs + f) * t
+cos 2\pi * f * t = cos 2\pi * (k * s - f) * t = cos 2\pi * (k * s + f) * t
 ++++
 
 for all integers k, positive or negative.
 
 == Question 2.2
 
-verify that stem:[\pm(k * fs + f)] for all integers k, positive or negative, is
-precisely the same set of values as stem:[\pm(k * fs \pm f)] for all intergers
+verify that stem:[\pm(k * s + f)] for all integers k, positive or negative, is
+precisely the same set of values as stem:[\pm(k * s \pm f)] for all intergers
 k, positive or negative.
 
-stem:[\pm(k * fs \pm f)] would have the same values of the same range as
-stem:[\pm(k * fs + f)], BUT the range would have more values.
+stem:[\pm(k * s \pm f)] would have the same values of the same range as
+stem:[\pm(k * s + f)], BUT the range would have more values.
 
 
 == Question 2.3
@@ -36,11 +36,10 @@ frequency for one bar. This is because TempoInfo is just bps (beats per second).
 1 beat is equal to a fourth of a bar so dividing it by four would give you the
 length of a bar each second.
 
-I do stem:[index % 16] because I need to simulate reducing the sampling rate by
+I do stem:[index % 16] because I need to simulate reducing the sampling rate to
 2khz.
 
-The frequency of the first alias is 1600hz.This is because you are only allowing
-1 sample to pass out 
+The frequency of the first alias is 1600hz.This is because stem:[2000 - 400 = 1600].
 
 
 == Links
