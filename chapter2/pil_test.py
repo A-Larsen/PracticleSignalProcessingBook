@@ -14,6 +14,7 @@ impixels = im.load()
 
 for x in range(0, 56):
     for y in range(0, 20):
+        print(f"rgba: {impixels[x, y]}")
         impixels[x, y] = (0, 255, 0, 255)
 
 im.save("out.png")
