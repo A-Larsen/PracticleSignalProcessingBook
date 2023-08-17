@@ -95,8 +95,8 @@ class Im():
 
 im = Im("bike.jpg")
 # im.fillRandomPixels(100, (0, 0, 0, 255))
-# im.fillPercentage(99, (0, 0, 0, 255))
+# im.fillPercentage(50, (0, 0, 0, 255))
 # im.copyRandomNeighborLeft(3000)
-im.copyRandomNerestNeighbor(100)
+# im.copyRandomNerestNeighbor(100)
 im.displayImage("out.png")
 
