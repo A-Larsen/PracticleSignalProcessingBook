@@ -1,0 +1,1 @@
+$env:INCLUDE = "$env:SDL2_PATH\SDL2;$env:INCLUDE"
