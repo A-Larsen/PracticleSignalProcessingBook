@@ -8,7 +8,6 @@
 #define SDL_main main
 #include <stdint.h>
 
-#define FILE_PATH ".\\question3.1.wav"
 #define ERROR() fprintf(stderr, "%s\n", SDL_GetError())
 #define BUFSIZE 2048
 

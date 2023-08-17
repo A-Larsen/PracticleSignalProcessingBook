@@ -9,7 +9,6 @@
 #define SDL_main main
 #include <stdint.h>
 
-#define FILE_PATH ".\\question3.1.wav"
 #define ERROR() fprintf(stderr, "%s\n", SDL_GetError())
 
 // This is 4 seconds of audio 48000 * 4
