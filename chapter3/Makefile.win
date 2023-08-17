@@ -1,5 +1,8 @@
 example: example.c
 	cl.exe example.c /link "%SDL2_PATH%/SDL2.lib"
 
-example2: example2.c
-	cl.exe example2.c /link "%SDL2_PATH%/SDL2.lib"
+noise: noise.c
+	cl.exe noise.c /link "%SDL2_PATH%/SDL2.lib"
+
+sine: sine.c
+	cl.exe sine.c /link "%SDL2_PATH%/SDL2.lib"
