@@ -12,7 +12,7 @@
 #define ERROR() fprintf(stderr, "%s\n", SDL_GetError())
 
 // This is 4 seconds of audio 48000 * 4
-#define BUFSIZE ((uint16_t)192000)
+#define BUFSIZE 48000 
 #define SAMPLE_RATE 48000
 
 SDL_AudioDeviceID device_id;
@@ -20,17 +20,21 @@ int16_t samples[BUFSIZE];
 
 void callback(void *userdata, uint8_t *stream, int streamLength)
 {
+    static uint8_t pos = 0;
+    static uint32_t length = 0;
     uint16_t *freq = (uint16_t *)userdata;
     SDL_LockAudioDevice(device_id);
 
-    for (int i = 0; i < BUFSIZE; ++i) {
+    for (int i = pos; i < BUFSIZE; ++i) {
         float t = i * 1 / (float)SAMPLE_RATE;
         double a = cos(2 * M_PI * t * (*freq)) * 128;
         samples[i] = a;
     }
 
-    memcpy(stream, &samples, BUFSIZE);
+    memcpy(stream, &samples, streamLength);
     SDL_UnlockAudioDevice(device_id);
+    pos += length;
+    length -= length;
 }
 
 int main(int argc, char **argv)
