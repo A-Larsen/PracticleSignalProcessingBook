@@ -12,6 +12,7 @@
 typedef struct AudioData {
     uint8_t *pos;
     uint32_t length;
+    SDL_AudioSpec spec;
 } AudioData;
 SDL_AudioDeviceID device_id;
 
@@ -26,16 +27,20 @@ void callback(void *userdata, uint8_t *stream, int streamLength)
 {
     SDL_LockAudioDevice(device_id);
     AudioData *audio = (AudioData *)userdata;
+    if (!(audio->spec.format & AUDIO_U16)) {
+        return;
+    }
     if (audio->length == 0) return;
     uint32_t length = (uint32_t)streamLength;
     length = (length > audio->length ? audio->length : length);
+    // divide stream by 8 to get values from -8191 -> +8191
     memcpy(stream, audio->pos, length);
     audio->pos += length;
     audio->length -= length;
     SDL_UnlockAudioDevice(device_id);
 }
 
-void toMuLaw(uint8_t idx, MuLaw *mu)
+void getMuLaw(uint8_t idx, MuLaw *mu)
 {
     uint8_t num = idx - 128;
     mu->sign = num >> 7;
@@ -48,11 +53,13 @@ void toMuLaw(uint8_t idx, MuLaw *mu)
 int main(void)
 {
     SDL_Init(SDL_INIT_AUDIO);
-    SDL_AudioSpec wavSpec;
-    memset(&wavSpec, 0, sizeof(SDL_AudioSpec));
+    AudioData audio;
+    /* SDL_AudioSpec wavSpec; */
+    memset(&audio, 0, sizeof(SDL_AudioSpec));
+    memset(&audio.spec, 0, sizeof(SDL_AudioSpec));
     uint8_t * wavStart;
     uint32_t wavLength;
-    SDL_AudioSpec *data = SDL_LoadWAV(FILE_PATH, &wavSpec, &wavStart,
+    SDL_AudioSpec *data = SDL_LoadWAV(FILE_PATH, &audio.spec, &wavStart,
                                       &wavLength);
 
     if(!data) {
@@ -60,15 +67,11 @@ int main(void)
         return 1;
     }
 
-    AudioData audio;
     audio.pos = wavStart;
     audio.length = wavLength;
-    wavSpec.callback = callback;
-    wavSpec.userdata = &audio;
-    SDL_AudioSpec desired;
-    desired.freq = 4000;
-    desired.samples = 4096;
-    device_id = SDL_OpenAudioDevice(NULL, 0, &wavSpec, &desired, 0);
+    audio.spec.callback = callback;
+    audio.spec.userdata = &audio;
+    device_id = SDL_OpenAudioDevice(NULL, 0, &audio.spec, NULL, 0);
 
     if(!device_id) {
         ERROR();
