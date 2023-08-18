@@ -6,3 +6,6 @@ noise: noise.c
 
 sine: sine.c
 	cl.exe sine.c /link "%SDL2_PATH%/SDL2.lib"
+
+mulaw: mulaw.c
+	cl.exe mulaw.c /link "%SDL2_PATH%/SDL2.lib"
