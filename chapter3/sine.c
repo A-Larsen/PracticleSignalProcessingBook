@@ -18,35 +18,43 @@
 SDL_AudioDeviceID device_id;
 int16_t samples[BUFSIZE];
 
+typedef struct _UserData {
+    uint16_t frequency;
+    float amplitude;
+} UserData;
+
 void callback(void *userdata, uint8_t *stream, int streamLength)
 {
     static uint8_t pos = 0;
     static uint32_t length = 0;
-    uint16_t *freq = (uint16_t *)userdata;
     SDL_LockAudioDevice(device_id);
+    UserData *data = (UserData *)userdata;
+    uint16_t max_amp = pow(2, 15) - 1;
 
     for (int i = pos; i < BUFSIZE; ++i) {
         float t = i * 1 / (float)SAMPLE_RATE;
-        double a = cos(2 * M_PI * t * (*freq)) * 128;
+        double a = cos(2 * M_PI * t * data->frequency) * max_amp * data->amplitude;
         samples[i] = a;
     }
 
     memcpy(stream, &samples, streamLength);
-    SDL_UnlockAudioDevice(device_id);
     pos += length;
     length -= length;
+    SDL_UnlockAudioDevice(device_id);
 }
 
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_AUDIO);
 
-    uint16_t freq;
-    if (argv[1]) {
-        sscanf(argv[1], "%hu", &freq);
+    UserData userdata;
+    if (argc == 3) {
+        sscanf(argv[1], "%hu", &userdata.frequency);
+        sscanf(argv[2], "%f", &userdata.amplitude);
 
     }else {
-        freq = 400;
+        userdata.frequency = 400;
+        userdata.amplitude = 0.5f;
     }
 
     SDL_AudioSpec wavSpec = {
@@ -55,7 +63,7 @@ int main(int argc, char **argv)
         .channels = 1,
         .size = SAMPLE_RATE,
         .samples = BUFSIZE,
-        .userdata = &freq,
+        .userdata = &userdata,
         .callback = callback
     };
 
@@ -71,8 +79,7 @@ int main(int argc, char **argv)
     }
 
     SDL_PauseAudioDevice(device_id, 0);
-    SDL_Delay(4000);
-
+    while(1);
     SDL_CloseAudioDevice(device_id);
     SDL_FreeWAV(wavStart);
     SDL_Quit();

@@ -37,23 +37,17 @@ void callback(void *userdata, uint8_t *stream, int streamLength)
     SDL_LockAudioDevice(device_id);
     AudioData *audio = (AudioData *)userdata;
 
-    if (!(audio->spec.format & AUDIO_U16)) {
-        return;
-    }
 
     if (audio->length == 0) return;
     uint32_t length = (uint32_t)streamLength;
     length = (length > audio->length ? audio->length : length);
-    /* MuLaw mu; */
-    /* memset(&mu, 0, sizeof(MuLaw)); */
-
-    /* for (int i = 0; i < length; ++i) { */
-    /*     int16_t s = ((float)stream[i] / (float)0xFFFF) * 8191.0f; */
-    /*     for (int i = -128; i < 127; ++i) { */
-    /*         getMuLaw(i, &mu); */
-    /*     } */
+    uint32_t max_amp = pow(2, 15) - 1;
+    uint16_t *data = (uint16_t *)audio->pos;
+    /* for (uint32_t i = 0; i < length; ++i) { */
+    /*     data[i] *= .0f; */
     /* } */
 
+    /* printf("%d\n", *audio->pos); */
     memcpy(stream, audio->pos, length);
     audio->pos += length;
     audio->length -= length;
@@ -71,11 +65,26 @@ int main(void)
     uint32_t wavLength;
     SDL_AudioSpec *data = SDL_LoadWAV(FILE_PATH, &audio.spec, &wavStart,
                                       &wavLength);
+    if (!(audio.spec.format & AUDIO_U16)) {
+        return 1;
+    }
 
     if(!data) {
         ERROR();
         return 1;
     }
+
+    MuLaw mu;
+    memset(&mu, 0, sizeof(MuLaw));
+
+    /* int amp = 4; */
+    /* for(uint32_t i = 0; i < wavLength; ++i) { */
+    /*     printf("%u\n", wavStart[i]); */
+    /*     /1* if (wavStart[i] - amp > 0) { *1/ */
+
+    /*     /1*     wavStart[i] -= amp; *1/ */
+    /*     /1* } *1/ */
+    /* } */
 
     audio.pos = wavStart;
     audio.length = wavLength;

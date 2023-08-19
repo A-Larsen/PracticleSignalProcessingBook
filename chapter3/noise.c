@@ -15,25 +15,43 @@
 SDL_AudioDeviceID device_id;
 uint8_t samples[BUFSIZE];
 
+typedef struct _UserData {
+    uint16_t frequency;
+    float amplitude;
+} UserData;
+
+
 void callback(void *userdata, uint8_t *stream, int streamLength)
 {
     static uint8_t pos = 0;
     static uint32_t length = 0;
     SDL_LockAudioDevice(device_id);
+    UserData *data = (UserData *)userdata;
+    uint16_t max_amp = pow(2, 15) - 1;
+
     for (int i = pos; i < BUFSIZE; ++i) {
         double r = (double)rand() / (double)RAND_MAX;
-        // only doing * .01 to adjust the gain.
-        samples[i] = floor(r * (256.0f * 0.01f));
+        samples[i] = r * max_amp * data->amplitude;
     }
+
     memcpy(stream, &samples, BUFSIZE);
-    SDL_UnlockAudioDevice(device_id);
     pos += length;
     length -= length;
+    SDL_UnlockAudioDevice(device_id);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_AUDIO);
+    UserData userdata;
+
+
+    if (argc == 2) {
+        sscanf(argv[1], "%f", &userdata.amplitude);
+
+    }else {
+        userdata.amplitude = 0.3f;
+    }
 
     SDL_AudioSpec wavSpec = {
         .format = AUDIO_S16,
@@ -41,12 +59,9 @@ int main(void)
         .channels = 1,
         .size = SAMPLE_RATE,
         .samples = BUFSIZE,
-        .userdata = NULL,
+        .userdata = &userdata,
         .callback = callback
     };
-
-    uint8_t * wavStart;
-    uint32_t wavLength;
 
 
     device_id = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 
@@ -60,9 +75,7 @@ int main(void)
     }
 
     SDL_PauseAudioDevice(device_id, 0);
-    SDL_Delay(4000);
-
+    while(1);
     SDL_CloseAudioDevice(device_id);
-    SDL_FreeWAV(wavStart);
     SDL_Quit();
 }
