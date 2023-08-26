@@ -1,11 +1,2 @@
-example: example.c
-	cl.exe example.c /link "%SDL2_PATH%/SDL2.lib"
-
-noise: noise.c
-	cl.exe noise.c /link "%SDL2_PATH%/SDL2.lib"
-
-sine: sine.c
-	cl.exe sine.c /link "%SDL2_PATH%/SDL2.lib"
-
-mulaw: mulaw.c
-	cl.exe mulaw.c /link "%SDL2_PATH%/SDL2.lib"
+build: question3.2-part3.c
+	cl.exe question3.2-part3.c /link %AUDIO_DEV%\audio.lib

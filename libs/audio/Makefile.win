@@ -1,0 +1,2 @@
+tst: tst.c
+	cl.exe tst.c /link audio.lib
