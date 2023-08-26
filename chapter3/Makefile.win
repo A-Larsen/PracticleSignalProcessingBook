@@ -1,2 +1,2 @@
-build: question3.2-part3.c
-	cl.exe question3.2-part3.c /link %AUDIO_DEV%\audio.lib
+build: question3.2.c
+	cl.exe question3.2.c /link %AUDIO_DEV%\audio.lib
