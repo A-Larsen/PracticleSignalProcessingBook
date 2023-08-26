@@ -40,6 +40,7 @@ static void handleStream(int16_t *stream, WavData *wavdata)
         return;
     }
 
+    // 0.25f converts into the range of -8191 to 8191
     int16_t to_mu = (int16_t)((float)(userdata->data[userdata->pos]) * 0.25f);
 
     uint16_t prev = 0;
@@ -51,8 +52,7 @@ static void handleStream(int16_t *stream, WavData *wavdata)
         bool sign = 0;
         mu_table(i, &qu, &sign);
         if (qu > to_mu) {
-            out = prev * 4;
-            out *= sign ? -1 : 1;
+            out = prev * 4 * (sign ? -1 : 1);
             break;
         }
         prev = qu;
@@ -77,9 +77,10 @@ int main(int argc, char **argv)
     mixer.master_amp = .4;
 
     wav_init(&userdata.wavdata, initStream, handleStream, &userdata.format, &userdata);
-    printf("sizeof %llu\n", sizeof(int8_t));
+
     userdata.wavdata.play = true;
     bool quit = false;
+
     while(!quit) {
         char key = _getch();
         switch (key) {
