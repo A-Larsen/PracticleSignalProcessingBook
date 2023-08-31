@@ -26,13 +26,19 @@ static void handleStream(int16_t *stream, WavData *wavdata)
 {
     UserData *userdata = (UserData *)wavdata->data;
     static uint32_t sample_number;
-    float t = (float)sample_number * 1.0f / (float)userdata->format.nSamplesPerSec;
+    float t = 0;
     float pos = 0;
-    if (sample_number % 3 == 0) {
-        t += 0.1f;
+    bool jitter = true;
+    /* bool jitter = false; */
+    // the minimum amout of jitter seems to be about .01
+    float jitter_amount = .01f;
+    if (sample_number % 3 == 0 && jitter) {
+        t = (float)sample_number * (1.0f + jitter_amount) / (float)userdata->format.nSamplesPerSec;
+    } else {
+        t = (float)sample_number * 1.0f / (float)userdata->format.nSamplesPerSec;
+
     }
     pos = 2 * M_PI * 1000 * t;
-    /* float pos = 2 * M_PI * t / 8; */
     if(pos >= TWOPI)  sample_number = 0;
     *stream = cos(pos) * userdata->max_amp;
     sample_number++;
