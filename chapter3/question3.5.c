@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
 
     userdata.range = userdata.max - userdata.min;
-    uint16_t quantization = 1 << 9;
+    uint16_t quantization = 1 << 6;
 
     for (int i = 0; i < userdata.data_len; ++i) {
         // ======
@@ -68,6 +68,15 @@ int main(int argc, char **argv)
         // ======
 
         int a = (float)userdata.data[i] * ((float)quantization / (float)userdata.range);
+
+        // ======
+        // Step 1A
+        // ======
+
+        // I know the book said in the range form 0 - 1, but the book did not
+        // specify the format for the audio, weather it be signed 16 bit or unsined
+        // 16 bit.
+        a += ((float)rand() / (float)RAND_MAX) * 1.1;
 
         // ======
         // Step 2

@@ -3,3 +3,13 @@ question3.2: question3.2.c
 
 question3.1: question3.1.c
 	cl.exe question3.1.c /link %AUDIO_DEV%\audio.lib
+
+question3.5: question3.5.c
+	cl.exe question3.5.c /link %AUDIO_DEV%\audio.lib
+
+question3.7: question3.7.c
+	cl.exe question3.7.c /link %AUDIO_DEV%\audio.lib
+
+clean:
+	DEL /Q *.exe *.obj *.exp
+.PHONY: clean
