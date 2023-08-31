@@ -19,8 +19,8 @@ typedef struct _UserData {
     WAVEFORMATEX format;
     uint32_t pos;
     float max_amp;
-    float max;
-    float min;
+    uint32_t max;
+    uint32_t min;
     float range;
 } UserData;
 
@@ -54,17 +54,19 @@ int main(int argc, char **argv)
     userdata.max_amp = pow(2, userdata.format.wBitsPerSample - 1) - 1;
     mixer.master_amp = .4;
 
-    for (int i = 0; i < userdata.data_len; ++i) {
-        if (userdata.data[i] > userdata.max) {
-            userdata.max = userdata.data[i];
-        }
-        if (userdata.data[i] < userdata.min) {
-            userdata.min = userdata.data[i];
-        }
-    }
+    /* for (int i = 0; i < userdata.data_len; ++i) { */
+    /*     if (userdata.data[i] > userdata.max) { */
+    /*         userdata.max = userdata.data[i]; */
+    /*     } */
+    /*     if (userdata.data[i] < userdata.min) { */
+    /*         userdata.min = userdata.data[i]; */
+    /*     } */
+    /* } */
+    userdata.max = 32767;
+    userdata.min = -32768;
 
     userdata.range = userdata.max - userdata.min;
-    uint16_t quantization = 1 << 5;
+    uint16_t quantization = 1 << 6;
 
     for (int i = 0; i < userdata.data_len; ++i) {
         int a = (float)userdata.data[i] * ((float)quantization / (float)userdata.range);
